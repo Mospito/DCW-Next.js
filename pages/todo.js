@@ -22,14 +22,22 @@ const Todo = () => {
             return tasks.map(
                 (task, index) => {
                     return (
-                        <li key={index}>
-                            {task.id}
-                            {(+idEdit !== +task.id) ?
-                                task.name :
-                                <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                            }
-                            <button onClick={() => editTask(task.id, task.name)}>Edit</button>
-                            <button onClick={() => deleteTask(task.id)}>Delete</button>
+                        <li key={index} className={styles.listItem}>
+                            <div>
+                                {index + 1}
+                                {(+idEdit !== +task.id) ?
+                                    task.name :
+                                    <input
+                                        className={styles.btnAdd}
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                }
+                                <button onClick={() => editTask(task.id, task.name)} className={styles.btnEdit}>Edit</button>
+                                <button onClick={() => deleteTask(task.id)} className={styles.btnDelete}>Delete</button>
+                            </div>
+
                         </li>)
                 });
         }
@@ -73,7 +81,8 @@ const Todo = () => {
         // tasks.push({ id: 3, name: 'xxxxx' })
         const id = tasks[tasks.length - 1].id + 1;
         console.log("Task: ", tasks);
-        setTasks([...tasks, { id, name }]) //setState
+        if (tasks.length <= 9 && name.trim() != "")
+            setTasks([...tasks, { id, name }]) //setState
     }
 
     return (
