@@ -1,16 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from '../styles/Todo.module.css'
 
 const Todo = () => {
 
-    const [tasks, setTasks] = useState(
-        [
-            { id: 1, name: 'Reading a book' },
-            { id: 2, name: 'Sleep at night' }
-        ])
+
+    const [tasks, setTasks] = useState([])
+
+    // const [tasks, setTasks] = useState(
+    //     [
+    //         { id: 1, name: 'Reading a book' },
+    //         { id: 2, name: 'Sleep at night' }
+    //     ])
 
     const [name, setName] = useState('');
     const [idEdit, setIdEdit] = useState(0);
+
+    useEffect( async () => {
+        let ts = await getTasks();
+        console.log(ts)
+        setTasks(ts) 
+    }, [] )
+ 
 
 
 
@@ -71,8 +81,20 @@ const Todo = () => {
         setTasks(newTasks);
 
     }
+    const getTasks = async () => {
+        const res = await fetch('http://localhost:8000/')
+        const json = await res.json()
+        console.log(json)
+        return json;
+     }
 
-
+     Todo.getInitialProps = async (ctx) => {
+        const res = await fetch('https://api.github.com/users/wwarodom')
+        const json = await res.json()
+        return { login: json.login, avatar_url: json.avatar_url }
+     }
+     
+     
 
 
 
